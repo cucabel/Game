@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace CoordinateNS
+﻿namespace CoordinateNS
 {
     public class Coordinate
     {
-
         private readonly int x;
         private readonly int y;
 
@@ -16,6 +13,13 @@ namespace CoordinateNS
 
         public int X => x;
         public int Y => y;
+
+        public override bool Equals(object obj)
+        {
+            return obj is Coordinate coordinate &&
+                   x == coordinate.x &&
+                   y == coordinate.y;
+        }
     }
 
 }

@@ -5,7 +5,6 @@ namespace BoardShouldNS
 {
     public class BoardShould
     {
-
         private Board board;
 
         [SetUp]
