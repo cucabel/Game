@@ -1,5 +1,8 @@
 ﻿using BoardNS;
+using CommandFactoryNS;
 using GameNS;
+using RobotNS;
+using ValidationNS;
 
 namespace ProgramNS
 {
@@ -9,12 +12,17 @@ namespace ProgramNS
         static void Main(string[] args)
         {
             Board board = new Board();
-            Game game = new Game(board);
-            Console.WriteLine(board.Robot.Coordinate.X);
-            Console.WriteLine(board.Robot.Coordinate.Y);
-            Console.WriteLine(board.Robot.Facing);
-            Console.WriteLine(board.Items[0].X);
-            Console.WriteLine(board.Items[0].Y);
+            Validation validation = new Validation();
+            CommandFactory commandFactory = new CommandFactory(validation);
+            Game game = new Game(board, commandFactory);
+            Console.WriteLine(Robot.Instance.Coordinate.X);
+            Console.WriteLine(Robot.Instance.Coordinate.Y);
+            Console.WriteLine(Robot.Instance.Facing);
+            foreach (var item in board.Items)
+            {
+                Console.WriteLine(item.X);
+                Console.WriteLine(item.Y);
+            }
         }
     }
 }

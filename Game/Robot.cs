@@ -28,5 +28,6 @@ namespace RobotNS
         }
         public Coordinate Coordinate { get => coordinate; set => coordinate = value; }
         public Facing Facing { get => facing; set => facing = value; }
+        public static Robot Instance { get => instance; set => instance = value; }
     }
 }

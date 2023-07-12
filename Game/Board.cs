@@ -1,17 +1,17 @@
 ﻿using CoordinateNS;
+using FacingNS;
+using IPlayNS;
 using RobotNS;
 
 namespace BoardNS
 {
-
-    public class Board
+    public class Board : IPlay
     {
         private const int MAX_HEIGHT = 5;
         private const int MAX_WIDTH = 5;
         private const int MIN_HEIGHT = 1;
         private const int MIN_WIDTH = 1;
 
-        private Robot robot;
         private List<Coordinate> items = new List<Coordinate>();
 
         public Board() {}
@@ -24,7 +24,18 @@ namespace BoardNS
 
         public static int MIN_WIDTH1 => MIN_WIDTH;
 
-        public Robot Robot { get => robot; set => robot = value; }
+        public void placeRobot(Coordinate newCoordinate, Facing facing)
+        {
+            Robot robot = Robot.Instance;
+
+            if (robot != null)
+            {
+                Coordinate coordinate = robot.Coordinate;
+                items.RemoveAll(c => c == coordinate);
+            }
+            robot = Robot.getInstance(newCoordinate, facing);
+            items.Add(newCoordinate);
+        }
         public List<Coordinate> Items { get => items; set => items = value; }
     }
 }

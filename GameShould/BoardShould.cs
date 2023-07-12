@@ -20,5 +20,12 @@ namespace BoardShouldNS
 
             Assert.IsTrue(boardItems.Count == 0);
         }
+
+        //Static Mocking, Elevated Feature
+        [Test]
+        public void place_one_robot_on_the_board_or_move_the_existing_one()
+        {
+            
+        }
     }
 }

@@ -1,20 +1,20 @@
-﻿using BoardNS;
-using CoordinateNS;
-using FacingNS;
+﻿using ICommandFactoryNS;
 using ICommandNS;
-using PlaceRobotCommandNS;
+using IPlayNS;
 
 namespace GameNS
 {
     public class Game
     {
-        private Board board;
+        private IPlay board;
+        private ICommandFactory commandFactory;
         private ICommand command;
 
         public Game() { }
-        public Game(Board board) 
-        { 
+        public Game(IPlay board, ICommandFactory commandFactory)
+        {
             this.board = board;
+            this.commandFactory = commandFactory;
             invokeCommand();
         }
         public void invokeCommand()
@@ -30,22 +30,11 @@ namespace GameNS
         }
         public void setCommand(string input)
         {
-            string[] userCommand = input.Split(' ');
-            string[] location = userCommand[1].Split(',');
-            int row = int.Parse(location[0]);
-            int col = int.Parse(location[1]);
-            string facing = location[2];
-
-            if (validateCommand(row, col, facing))
-            {
-                Coordinate validCoordinate = new Coordinate(row, col);
-                Facing validFacing = (Facing)Enum.Parse(typeof(Facing), facing);
-                command = new PlaceRobotCommand(board, validCoordinate, validFacing);
-            }
+            command = commandFactory.getCommand(input, board);
         }
 
-        public void executeCommand() 
-        { 
+        public void executeCommand()
+        {
             if (command != null)
             {
                 command.execute();
@@ -55,23 +44,8 @@ namespace GameNS
         {
             return Console.ReadLine();
         }
-
-        public Boolean validateCommand(int row, int col, string facing)
-        {
-            if (row >= Board.MIN_HEIGHT1 &&
-                row <= Board.MAX_HEIGHT1 &&
-                col >= Board.MIN_WIDTH1 &&
-                col <= Board.MAX_WIDTH1 &&
-                Enum.IsDefined(typeof(Facing), facing))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public Board Board { get => board; set => board = value; }
+        public IPlay Board { get => board; set => board = value; }
+        public ICommandFactory CommandFactory { get => commandFactory; set => commandFactory = value; }
         public ICommand Command { get => command; set => command = value; }
     }
 }

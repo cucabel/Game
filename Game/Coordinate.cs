@@ -20,6 +20,9 @@
                    x == coordinate.x &&
                    y == coordinate.y;
         }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
+        }
     }
-
 }

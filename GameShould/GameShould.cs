@@ -1,20 +1,31 @@
-﻿using Telerik.JustMock;
+﻿using BoardNS;
+using CoordinateNS;
+using FacingNS;
 using GameNS;
-using PlaceRobotCommandNS;
+using ICommandFactoryNS;
 using ICommandNS;
+using IPlayNS;
+using PlaceRobotCommandNS;
+using Telerik.JustMock;
 
 namespace GameShould
 {
     public class GameShould
     {
+        private ICommandFactory mockedCommandFactory;
+        private IPlay board;
+        private ICommand mockedPlaceRobotCommand;
         private Game game;
-        ICommand mockedPlaceRobotCommand;
 
         [SetUp]
         public void Setup()
         {
-            game = new Game();
+            mockedCommandFactory = Mock.Create<ICommandFactory>();
+            board = new Board();
             mockedPlaceRobotCommand = Mock.Create<ICommand>();
+            game = new Game();
+            game.Board = board;
+            game.CommandFactory = mockedCommandFactory;
         }
 
         [Test]
@@ -30,38 +41,29 @@ namespace GameShould
         }
 
         [Test]
-        public void validate_the_user_command()
+        public void set_the_command_when_is_valid()
         {
-            Boolean validCommand = game.validateCommand(2, 3, "NORTH");
+            string mockedString = "PLACE_ROBOT 2,3,NORTH";
+            Coordinate coordinate = new Coordinate(2, 3);
+            Facing facing = Facing.NORTH;
+            ICommand placeRobotCommand = new PlaceRobotCommand(board, coordinate, facing);
+            Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(placeRobotCommand);
 
-            Assert.IsTrue(validCommand);
-        }
+            game.setCommand(mockedString);
 
-        [TestCase(2, 3, "CENTER")]
-        [TestCase(2, 6, "EAST")]
-        public void invalidate_the_user_command(int row, int col, string facing)
-        {
-            Boolean invalidCommand = game.validateCommand(row, col, facing);
-
-            Assert.IsFalse(invalidCommand);
+            Mock.Assert(() => mockedCommandFactory.getCommand(mockedString, board), Occurs.Once());
+            Assert.IsNotNull(game.Command);
         }
 
         [Test]
-        public void set_the_valid_command()
+        public void ignore_the_command_when_is_not_valid()
         {
-            string mockedString = "PLACE_ROBOT 2,3,NORTH";
+            string mockedString = "PLACE_ROBOT 2,6,NORTH";
+            Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(game.Command);
 
             game.setCommand(mockedString);
 
-            Assert.IsInstanceOf(typeof(PlaceRobotCommand), game.Command);
-        }
-
-        [TestCase("PLACE_ROBOT 2,3,CENTER")]
-        [TestCase("PLACE_ROBOT 2,6,NORTH")]
-        public void ignore_the_invalid_command(string mockedString)
-        {
-            game.setCommand(mockedString);
-
+            Mock.Assert(() => mockedCommandFactory.getCommand(mockedString, board), Occurs.Once());
             Assert.IsNull(game.Command);
         }
 

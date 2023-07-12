@@ -6,9 +6,9 @@ namespace RobotShouldNS
 {
     public class RobotShould
     {
-        Coordinate coordinate;
-        Facing facing;
-        Robot instance;
+        private Coordinate coordinate;
+        private Facing facing;
+        private Robot instance;
 
         [SetUp]
         public void Setup()
