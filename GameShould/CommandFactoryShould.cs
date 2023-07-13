@@ -1,12 +1,15 @@
 ﻿using BoardNS;
 using CommandFactoryNS;
 using CoordinateNS;
+using FacingNS;
 using ICommandFactoryNS;
 using ICommandNS;
 using IPlayNS;
 using IValidationNS;
 using PlaceRobotCommandNS;
 using PlaceWallCommandNS;
+using ReportCommandNS;
+using RobotNS;
 using Telerik.JustMock;
 
 namespace CommandFactoryShouldNS
@@ -98,5 +101,30 @@ namespace CommandFactoryShouldNS
 
             Assert.IsNull(command);
         }
+
+        [Test]
+        public void get_the_report_command_when_there_is_a_robot_on_the_board()
+        {
+            string mockedString = "REPORT";
+            Coordinate coordinate = new Coordinate(2, 3);
+            Facing facing = Facing.NORTH;
+            Robot robot = Robot.getInstance(coordinate, facing);
+
+            ICommand command = commandFactory.getCommand(mockedString, board);
+
+            Assert.IsInstanceOf(typeof(ReportCommand), command);
+        }
+
+        [Test]
+        public void ignore_the_report_command_when_there_is_not_a_robot_on_the_board()
+        {
+            Robot.Instance = null;
+            string mockedString = "REPORT";
+
+            ICommand command = commandFactory.getCommand(mockedString, board);
+
+            Assert.IsNull(command);
+        }
+
     }
 }

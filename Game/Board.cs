@@ -36,6 +36,10 @@ namespace BoardNS
             robot = Robot.getInstance(newCoordinate, facing);
             items.Add(newCoordinate);
         }
+        public void getRobotLocation()
+        {
+            Console.WriteLine(Robot.Instance.Coordinate.X + ", " + Robot.Instance.Coordinate.Y + ", " + Robot.Instance.Facing);
+        }
         public List<Coordinate> Items { get => items; set => items = value; }
     }
 }

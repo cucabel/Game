@@ -6,6 +6,8 @@ using IPlayNS;
 using IValidationNS;
 using PlaceRobotCommandNS;
 using PlaceWallCommandNS;
+using ReportCommandNS;
+using RobotNS;
 
 namespace CommandFactoryNS
 {
@@ -21,9 +23,16 @@ namespace CommandFactoryNS
             ICommand command = null;
             string[] userCommand = input.Split(' ');
             string request = userCommand[0];
-            string[] location = userCommand[1].Split(',');
-            int row = int.Parse(location[0]);
-            int col = int.Parse(location[1]);
+            string[] location = new string[3];
+            int row = 0;
+            int col = 0;
+
+            if (userCommand.Length > 1)
+            {
+                location = userCommand[1].Split(',');
+                row = int.Parse(location[0]);
+                col = int.Parse(location[1]);
+            }
 
             if (request.Equals("PLACE_ROBOT"))
             {
@@ -45,6 +54,14 @@ namespace CommandFactoryNS
                     {
                         command = new PlaceWallCommand(board, validCoordinate);
                     }
+                }
+            } else if (request.Equals("REPORT"))
+            {
+                Robot robot = Robot.Instance;
+
+                if (robot != null)
+                {
+                    command = new ReportCommand(board);
                 }
             }
             return command;

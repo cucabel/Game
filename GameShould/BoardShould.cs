@@ -1,5 +1,6 @@
 using BoardNS;
 using CoordinateNS;
+using GameNS;
 
 namespace BoardShouldNS
 {
@@ -23,9 +24,10 @@ namespace BoardShouldNS
 
         //Static Mocking, Elevated Feature
         [Test]
-        public void place_one_robot_on_the_board_or_move_the_existing_one()
-        {
-            
-        }
+        public void place_one_robot_on_the_board_if_there_are_no_robots_on_the_board() { }
+
+        //Static Mocking, Elevated Feature
+        [Test]
+        public void move_the_existing_robot_if_there_is_already_a_robot_on_the_board() { }
     }
 }
