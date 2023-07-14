@@ -3,6 +3,7 @@ using CoordinateNS;
 using FacingNS;
 using IPlayNS;
 using IValidationNS;
+using RobotNS;
 
 namespace ValidationNS
 {
@@ -31,6 +32,12 @@ namespace ValidationNS
         public Boolean isOccupiedLocation(Coordinate coordinate, IPlay board)
         {
             if (board.Items.Contains(coordinate)) return true;
+
+            return false;
+        }
+        public Boolean isRobot()
+        {
+            if (Robot.Instance != null) return true;
 
             return false;
         }

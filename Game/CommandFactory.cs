@@ -4,6 +4,7 @@ using ICommandFactoryNS;
 using ICommandNS;
 using IPlayNS;
 using IValidationNS;
+using MoveCommandNS;
 using PlaceRobotCommandNS;
 using PlaceWallCommandNS;
 using ReportCommandNS;
@@ -57,11 +58,19 @@ namespace CommandFactoryNS
                 }
             } else if (request.Equals("REPORT"))
             {
-                Robot robot = Robot.Instance;
-
-                if (robot != null)
+                if (validation.isRobot())
                 {
                     command = new ReportCommand(board);
+                }
+            } else if (request.Equals("MOVE"))
+            {
+                if (validation.isRobot())
+                {
+                    Coordinate nextCoordinate = board.moveOneSpaceForward(Robot.Instance.Coordinate, Robot.Instance.Facing);
+                    if (!validation.isOccupiedLocation(nextCoordinate, board))
+                    {
+                        command = new MoveCommand(board, nextCoordinate);
+                    }
                 }
             }
             return command;

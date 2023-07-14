@@ -1,5 +1,7 @@
 ﻿using CoordinateNS;
+using FacingNS;
 using IPlayNS;
+using RobotNS;
 using Telerik.JustMock;
 using ValidationNS;
 
@@ -62,6 +64,30 @@ namespace ValidationShouldNS
             Boolean isOccupiedLocation = validation.isOccupiedLocation(coordinate, mockedBoard);
 
             Assert.IsTrue(isOccupiedLocation);
+        }
+
+        //Static Mocking, Elevated Feature
+        [Test]
+        public void validate_if_there_is_a_robot_on_the_board()
+        {
+            Coordinate coordinate = new Coordinate(2, 3);
+            Facing facing = Facing.NORTH;
+            Robot robot = Robot.getInstance(coordinate, facing);
+
+            Boolean isRobot = validation.isRobot();
+
+            Assert.IsTrue(isRobot);
+        }
+
+        //Static Mocking, Elevated Feature
+        [Test]
+        public void validate_if_there_is_not_a_robot_on_the_board()
+        {
+            Robot.Instance = null;
+
+            Boolean isRobot = validation.isRobot();
+
+            Assert.IsFalse(isRobot);
         }
     }
 }
