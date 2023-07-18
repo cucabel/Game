@@ -1,8 +1,7 @@
-﻿using IPlayNS;
-using ReportCommandNS;
+﻿using ToyRobot;
 using Telerik.JustMock;
 
-namespace ReportCommanShouldNS
+namespace ToyRobotShould
 {
     public class ReportCommanShould
     {

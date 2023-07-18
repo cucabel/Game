@@ -1,0 +1,15 @@
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\GameMain.exe
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\GameMain.deps.json
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\GameMain.runtimeconfig.json
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\GameMain.dll
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\GameMain.pdb
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.csproj.AssemblyReference.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.AssemblyInfoInputs.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.AssemblyInfo.cs
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.csproj.CoreCompileInputs.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.dll
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\refint\GameMain.dll
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.pdb
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\GameMain.genruntimeconfig.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ref\GameMain.dll

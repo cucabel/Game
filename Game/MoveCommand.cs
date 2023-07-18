@@ -1,8 +1,4 @@
-﻿using CoordinateNS;
-using ICommandNS;
-using IPlayNS;
-
-namespace MoveCommandNS
+﻿namespace ToyRobot
 {
     public class MoveCommand : ICommand
     {

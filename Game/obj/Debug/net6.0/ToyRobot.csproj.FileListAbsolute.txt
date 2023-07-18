@@ -1,0 +1,15 @@
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\ToyRobot.exe
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\ToyRobot.deps.json
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\ToyRobot.runtimeconfig.json
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\ToyRobot.dll
+C:\Users\immar\source\repos\Game\Game\bin\Debug\net6.0\ToyRobot.pdb
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.csproj.AssemblyReference.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.AssemblyInfoInputs.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.AssemblyInfo.cs
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.csproj.CoreCompileInputs.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.dll
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\refint\ToyRobot.dll
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.pdb
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ToyRobot.genruntimeconfig.cache
+C:\Users\immar\source\repos\Game\Game\obj\Debug\net6.0\ref\ToyRobot.dll

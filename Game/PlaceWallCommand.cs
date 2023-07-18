@@ -1,8 +1,4 @@
-﻿using CoordinateNS;
-using ICommandNS;
-using IPlayNS;
-
-namespace PlaceWallCommandNS
+﻿namespace ToyRobot
 {
     public class PlaceWallCommand : ICommand
     {
@@ -15,7 +11,7 @@ namespace PlaceWallCommandNS
         }
         public void execute()
         {
-            board.Items.Add(coordinate);
+            board.placeWall(coordinate);
         }
     }
 }

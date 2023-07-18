@@ -1,9 +1,7 @@
-﻿using CoordinateNS;
-using IPlayNS;
-using PlaceWallCommandNS;
+﻿using ToyRobot;
 using Telerik.JustMock;
 
-namespace PlaceWallCommandShouldNS
+namespace ToyRobotShould
 {
     public class PlaceWallCommandShould
     {
@@ -15,20 +13,18 @@ namespace PlaceWallCommandShouldNS
         public void Setup()
         {
             mockedBoard = Mock.Create<IPlay>();
-            coordinate = new Coordinate(2, 3);
+            coordinate = new Coordinate(Board.MIN_WIDTH1, Board.MIN_HEIGHT1);
             command = new PlaceWallCommand(mockedBoard, coordinate);
         }
 
         [Test]
         public void should_pass_the_request_to_the_board()
         {
-            List<Coordinate> coordinates = new List<Coordinate>();
-            Mock.Arrange(() => mockedBoard.Items).Returns(coordinates);
+            Mock.Arrange(() => mockedBoard.placeWall(coordinate)).DoNothing();
 
             command.execute();
 
-            Mock.Assert(() => mockedBoard.Items, Occurs.Once());
-
+            Mock.Assert(() => mockedBoard.placeWall(coordinate), Occurs.Once());
         }
     }
 }

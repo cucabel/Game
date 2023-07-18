@@ -1,8 +1,4 @@
-﻿using ICommandFactoryNS;
-using ICommandNS;
-using IPlayNS;
-
-namespace GameNS
+﻿namespace ToyRobot
 {
     public class Game
     {
@@ -28,6 +24,10 @@ namespace GameNS
                 input = getInput();
             }
         }
+        public string getInput()
+        {
+            return Console.ReadLine();
+        }
         public void setCommand(string input)
         {
             command = commandFactory.getCommand(input, board);
@@ -39,10 +39,6 @@ namespace GameNS
             {
                 command.execute();
             }
-        }
-        public string getInput()
-        {
-            return Console.ReadLine();
         }
         public IPlay Board { get => board; set => board = value; }
         public ICommandFactory CommandFactory { get => commandFactory; set => commandFactory = value; }

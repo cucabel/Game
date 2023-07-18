@@ -1,7 +1,4 @@
-﻿using ICommandNS;
-using IPlayNS;
-
-namespace ReportCommandNS
+﻿namespace ToyRobot
 {
     public class ReportCommand : ICommand
     {

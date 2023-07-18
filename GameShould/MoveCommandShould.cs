@@ -1,9 +1,7 @@
-﻿using CoordinateNS;
-using IPlayNS;
-using MoveCommandNS;
+﻿using ToyRobot;
 using Telerik.JustMock;
 
-namespace MoveCommandShouldNS
+namespace ToyRobotShould
 {
     public class MoveCommandShould
     {
@@ -15,7 +13,7 @@ namespace MoveCommandShouldNS
         public void Setup()
         {
             mockedBoard = Mock.Create<IPlay>();
-            nextCoordinate = new Coordinate(2, 3);
+            nextCoordinate = new Coordinate(Board.MIN_WIDTH1, Board.MIN_HEIGHT1);
             command = new MoveCommand(mockedBoard, nextCoordinate);
         }
 

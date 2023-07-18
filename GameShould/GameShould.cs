@@ -1,14 +1,7 @@
-﻿using BoardNS;
-using CoordinateNS;
-using FacingNS;
-using GameNS;
-using ICommandFactoryNS;
-using ICommandNS;
-using IPlayNS;
-using PlaceRobotCommandNS;
+﻿using ToyRobot;
 using Telerik.JustMock;
 
-namespace GameShould
+namespace ToyRobotShould
 {
     public class GameShould
     {
@@ -31,7 +24,7 @@ namespace GameShould
         [Test]
         public void read_the_user_command()
         {
-            string mockedString = "PLACE_ROBOT 2,3,NORTH";
+            string mockedString = validPlaceRobotStringCommand();
             StringReader mockedInput = new StringReader(mockedString);
             Console.SetIn(mockedInput);
 
@@ -43,10 +36,10 @@ namespace GameShould
         [Test]
         public void set_the_command_when_is_valid()
         {
-            string mockedString = "PLACE_ROBOT 2,3,NORTH";
-            Coordinate coordinate = new Coordinate(2, 3);
-            Facing facing = Facing.NORTH;
-            ICommand placeRobotCommand = new PlaceRobotCommand(board, coordinate, facing);
+            string mockedString = validPlaceRobotStringCommand();
+            Coordinate coordinate = new Coordinate(validX(), validY());
+            ICardinal cardinal = new North();
+            ICommand placeRobotCommand = new PlaceRobotCommand(board, coordinate, cardinal);
             Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(placeRobotCommand);
 
             game.setCommand(mockedString);
@@ -58,7 +51,7 @@ namespace GameShould
         [Test]
         public void ignore_the_command_when_is_not_valid()
         {
-            string mockedString = "PLACE_ROBOT 2,6,NORTH";
+            string mockedString = StringCommand.PLACE_ROBOT.ToString() + " " + validX().ToString() + "," + invalidY().ToString() + "," + validDirection();
             Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(game.Command);
 
             game.setCommand(mockedString);
@@ -87,6 +80,14 @@ namespace GameShould
             game.executeCommand();
 
             Mock.Assert(() => mockedPlaceRobotCommand.execute(), Occurs.Never());
+        }
+        public int validX() { return Board.MIN_WIDTH1; }
+        public int validY() { return Board.MIN_HEIGHT1; }
+        public int invalidY() { return Board.MAX_HEIGHT1 + Board.UNIT_SPACE1; }
+        public string validDirection() { return Direction.NORTH.ToString(); }
+        public string validPlaceRobotStringCommand()
+        {
+            return StringCommand.PLACE_WALL.ToString() + " " + validX().ToString() + "," + validY().ToString();
         }
     }
 }

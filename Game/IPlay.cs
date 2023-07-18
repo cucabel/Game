@@ -1,14 +1,8 @@
-﻿using CoordinateNS;
-using FacingNS;
-
-namespace IPlayNS
+﻿namespace ToyRobot
 {
-    public interface IPlay
+    public interface IPlay : IPlayRobot, IPlayWall
     {
-        public void placeRobot(Coordinate newCoordinate, Facing facing);
-        public void getRobotLocation();
-        public Coordinate moveOneSpaceForward(Coordinate coordinate, Facing direction);
-        public void moveRobot(Coordinate coordinate);
+        public Coordinate moveOneSpaceForward(Coordinate coordinate, ICardinal cardinal);
         public List<Coordinate> Items { get; set; }
     }
 }

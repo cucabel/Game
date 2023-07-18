@@ -1,11 +1,7 @@
-﻿using CoordinateNS;
-using FacingNS;
-using IPlayNS;
-using RobotNS;
+﻿using ToyRobot;
 using Telerik.JustMock;
-using ValidationNS;
 
-namespace ValidationShouldNS
+namespace ToyRobotShould
 {
     public class ValidationShould
     {
@@ -22,9 +18,9 @@ namespace ValidationShouldNS
         [Test]
         public void validate_location()
         {
-            Boolean validCommand0 = validation.validateLocation(2, 3, "NORTH");
-            Boolean validCommand1 = validation.validateLocation(2, 3, "CENTER");
-            Boolean validCommand2 = validation.validateLocation(2, 6, "EAST");
+            Boolean validCommand0 = validation.validateLocation(validX(), validY(), validDirection());
+            Boolean validCommand1 = validation.validateLocation(validX(), validY(), invalidDirection());
+            Boolean validCommand2 = validation.validateLocation(validX(), invalidY(), validDirection());
 
             Assert.IsTrue(validCommand0);
             Assert.IsFalse(validCommand1);
@@ -34,8 +30,8 @@ namespace ValidationShouldNS
         [Test]
         public void validate_coordinate()
         {
-            Boolean validCoordinate0 = validation.validateCoordinate(2, 3);
-            Boolean validCoordinate1 = validation.validateCoordinate(2, 6);
+            Boolean validCoordinate0 = validation.validateCoordinate(validX(), validY());
+            Boolean validCoordinate1 = validation.validateCoordinate(validX(), invalidY());
 
             Assert.IsTrue(validCoordinate0);
             Assert.IsFalse(validCoordinate1);
@@ -45,10 +41,10 @@ namespace ValidationShouldNS
         public void validate_if_the_location_is_not_occupied()
         {
             List<Coordinate> coordinates = new List<Coordinate>();
-            Coordinate coordinate = new Coordinate(2, 3);
+            Coordinate coordinate = new Coordinate(validX(), validY());
             Mock.Arrange(() => mockedBoard.Items).Returns(coordinates);
 
-            Boolean isOccupiedLocation = validation.isOccupiedLocation(coordinate, mockedBoard);
+            Boolean isOccupiedLocation = validation.isOccupiedCoordinate(coordinate, mockedBoard);
 
             Assert.IsFalse(isOccupiedLocation);
         }
@@ -57,11 +53,11 @@ namespace ValidationShouldNS
         public void validate_if_the_location_is_occupied()
         {
             List<Coordinate> coordinates = new List<Coordinate>();
-            Coordinate coordinate = new Coordinate(2, 3);
+            Coordinate coordinate = new Coordinate(validX(), validY());
             coordinates.Add(coordinate);
             Mock.Arrange(() => mockedBoard.Items).Returns(coordinates);
 
-            Boolean isOccupiedLocation = validation.isOccupiedLocation(coordinate, mockedBoard);
+            Boolean isOccupiedLocation = validation.isOccupiedCoordinate(coordinate, mockedBoard);
 
             Assert.IsTrue(isOccupiedLocation);
         }
@@ -70,9 +66,9 @@ namespace ValidationShouldNS
         [Test]
         public void validate_if_there_is_a_robot_on_the_board()
         {
-            Coordinate coordinate = new Coordinate(2, 3);
-            Facing facing = Facing.NORTH;
-            Robot robot = Robot.getInstance(coordinate, facing);
+            Coordinate coordinate = new Coordinate(validX(), validY());
+            ICardinal cardinal = new North();
+            Robot robot = Robot.getInstance(coordinate, cardinal);
 
             Boolean isRobot = validation.isRobot();
 
@@ -89,5 +85,10 @@ namespace ValidationShouldNS
 
             Assert.IsFalse(isRobot);
         }
+        public int validX() { return Board.MIN_WIDTH1; }
+        public int validY() { return Board.MIN_HEIGHT1; }
+        public int invalidY() { return Board.MAX_HEIGHT1 + Board.UNIT_SPACE1; }
+        public string validDirection() { return Direction.NORTH.ToString(); }
+        public string invalidDirection() { return "CENTER"; }
     }
 }

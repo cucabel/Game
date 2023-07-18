@@ -1,9 +1,7 @@
-using BoardNS;
-using CoordinateNS;
-using FacingNS;
-using RobotNS;
+using ToyRobot;
+using NUnit.Framework.Internal;
 
-namespace BoardShouldNS
+namespace ToyRobotShould
 {
     public class BoardShould
     {
@@ -27,37 +25,29 @@ namespace BoardShouldNS
         [Test]
         public void place_one_robot_on_the_board_if_there_are_no_robots_on_the_board() 
         {
-            Coordinate coordinate = new Coordinate(2, 3);
-            Facing facing = Facing.NORTH;
-
-            board.placeRobot(coordinate, facing);
+            board.placeRobot(bottomLeftCoordinate(), northCardinal());
 
             Assert.NotNull(Robot.Instance);
-            Assert.That(board.Items.Contains(coordinate));
+            Assert.That(board.Items.Contains(bottomLeftCoordinate()));
         }
 
         //Static Mocking, Elevated Feature
         [Test]
-        public void move_the_existing_robot_if_there_is_already_a_robot_on_the_board() 
+        public void move_the_existing_robot_if_there_is_already_a_robot_on_the_board()
         {
-            Coordinate existingCoordinate = new Coordinate(2, 3);
-            Coordinate coordinate = new Coordinate(1, 1);
-            Facing facing = Facing.NORTH;
-            Robot robot = Robot.getInstance(existingCoordinate, facing);
+            getRobotInstance();
 
-            board.placeRobot(coordinate, facing);
+            board.placeRobot(topRightCoordinate(), northCardinal());
 
-            Assert.That(Robot.Instance.Coordinate, Is.EqualTo(coordinate));
+            Assert.That(Robot.Instance.Coordinate, Is.EqualTo(topRightCoordinate()));
         }
 
         [Test]
         public void get_the_coordinate_of_moving_one_space_up() 
         {
-            Coordinate coordinate = new Coordinate(1, 1);
-            Coordinate expectedCoordinate = new Coordinate(1, 2);
-            Facing facing = Facing.NORTH;
+            Coordinate expectedCoordinate = new Coordinate(Board.MIN_WIDTH1, Board.MIN_HEIGHT1 + Board.UNIT_SPACE1);
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
+            Coordinate newCoordinate = board.moveOneSpaceForward(bottomLeftCoordinate(), northCardinal());
 
             Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
         }
@@ -65,11 +55,9 @@ namespace BoardShouldNS
         [Test]
         public void get_the_coordinate_of_moving_one_space_right()
         {
-            Coordinate coordinate = new Coordinate(1, 1);
-            Coordinate expectedCoordinate = new Coordinate(2, 1);
-            Facing facing = Facing.EAST;
+            Coordinate expectedCoordinate = new Coordinate(Board.MIN_WIDTH1 + Board.UNIT_SPACE1, Board.MIN_HEIGHT1);
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
+            Coordinate newCoordinate = board.moveOneSpaceForward(bottomLeftCoordinate(), eastCardinal());
 
             Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
         }
@@ -77,11 +65,9 @@ namespace BoardShouldNS
         [Test]
         public void get_the_coordinate_of_moving_one_space_down()
         {
-            Coordinate coordinate = new Coordinate(5, 5);
-            Coordinate expectedCoordinate = new Coordinate(5, 4);
-            Facing facing = Facing.SOUTH;
+            Coordinate expectedCoordinate = new Coordinate(Board.MAX_WIDTH1, Board.MAX_HEIGHT1 - Board.UNIT_SPACE1);
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
+            Coordinate newCoordinate = board.moveOneSpaceForward(topRightCoordinate(), southCardinal());
 
             Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
         }
@@ -89,11 +75,9 @@ namespace BoardShouldNS
         [Test]
         public void get_the_coordinate_of_moving_one_space_left()
         {
-            Coordinate coordinate = new Coordinate(5, 5);
-            Coordinate expectedCoordinate = new Coordinate(4, 5);
-            Facing facing = Facing.WEST;
+            Coordinate expectedCoordinate = new Coordinate(Board.MAX_WIDTH1 - Board.UNIT_SPACE1, Board.MAX_HEIGHT1);
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
+            Coordinate newCoordinate = board.moveOneSpaceForward(topRightCoordinate(), westCardinal());
 
             Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
         }
@@ -101,63 +85,87 @@ namespace BoardShouldNS
         [Test]
         public void get_the_coordinate_of_wrapping_from_top_to_bottom_when_moving_one_space_up()
         {
-            Coordinate coordinate = new Coordinate(5, 5);
-            Coordinate expectedCoordinate = new Coordinate(5, 1);
-            Facing facing = Facing.NORTH;
+            Coordinate newCoordinate = board.moveOneSpaceForward(topRightCoordinate(), northCardinal());
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
-
-            Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
+            Assert.That(newCoordinate, Is.EqualTo(bottomRightCoordinate()));
         }
 
         [Test]
         public void get_the_coordinate_of_wrapping_from_bottom_to_top_when_moving_one_space_down()
         {
-            Coordinate coordinate = new Coordinate(1, 1);
-            Coordinate expectedCoordinate = new Coordinate(1, 5);
-            Facing facing = Facing.SOUTH;
+            Coordinate newCoordinate = board.moveOneSpaceForward(bottomLeftCoordinate(), southCardinal());
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
-
-            Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
+            Assert.That(newCoordinate, Is.EqualTo(topLeftCoordinate()));
         }
 
         [Test]
         public void get_the_coordinate_of_wrapping_from_right_to_left_when_moving_one_space_right()
         {
-            Coordinate coordinate = new Coordinate(5, 5);
-            Coordinate expectedCoordinate = new Coordinate(1, 5);
-            Facing facing = Facing.EAST;
+            Coordinate newCoordinate = board.moveOneSpaceForward(topRightCoordinate(), eastCardinal());
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
-
-            Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
+            Assert.That(newCoordinate, Is.EqualTo(topLeftCoordinate()));
         }
 
         [Test]
         public void get_the_coordinate_of_wrapping_from_left_to_right_when_moving_one_space_left()
         {
-            Coordinate coordinate = new Coordinate(1, 1);
-            Coordinate expectedCoordinate = new Coordinate(5, 1);
-            Facing facing = Facing.WEST;
+            Coordinate newCoordinate = board.moveOneSpaceForward(bottomLeftCoordinate(), westCardinal());
 
-            Coordinate newCoordinate = board.moveOneSpaceForward(coordinate, facing);
-
-            Assert.That(newCoordinate, Is.EqualTo(expectedCoordinate));
+            Assert.That(newCoordinate, Is.EqualTo(bottomRightCoordinate()));
         }
+
+        [Test]
+        public void place_one_wall_on_the_board()
+        {
+            board.placeWall(bottomLeftCoordinate());
+
+            Assert.That(board.Items.Contains(bottomLeftCoordinate()));
+        }
+
         //Static Mocking, Elevated Feature
         [Test]
-        public void move_the_robot_one_space_forward_in_its_facing_direction() 
+        public void move_the_robot_one_space_forward_in_its_direction() 
         {
-            Coordinate coordinate = new Coordinate(1, 1);
-            Coordinate nextCoordinate = new Coordinate(1, 2);
-            Facing facing = Facing.NORTH;
-            Robot robot = Robot.getInstance(coordinate, facing);
+            Coordinate nextCoordinate = new Coordinate(Board.MIN_WIDTH1, Board.MIN_HEIGHT1 + Board.UNIT_SPACE1);
+            getRobotInstance();
             Robot.Instance.Coordinate = nextCoordinate;
 
             board.moveRobot(nextCoordinate);
 
             Assert.That(Robot.Instance.Coordinate, Is.EqualTo(nextCoordinate));
         }
+        //Static Mocking, Elevated Feature
+        [Test]
+        public void turn_the_robot_90_degrees_to_its_left()
+        {
+            getRobotInstance();
+
+            board.turnRobotLeft();
+
+            Assert.IsInstanceOf(typeof(West), westCardinal());
+        }
+        //Static Mocking, Elevated Feature
+        [Test]
+        public void turn_the_robot_90_degrees_to_its_right()
+        {
+            getRobotInstance();
+
+            board.turnRobotRight();
+
+            Assert.IsInstanceOf(typeof(East), eastCardinal());
+        }
+
+        public void getRobotInstance()
+        {
+            Robot.getInstance(bottomLeftCoordinate(), northCardinal());
+        }
+        public Coordinate bottomLeftCoordinate() { return new Coordinate(Board.MIN_WIDTH1, Board.MIN_HEIGHT1); }
+        public Coordinate bottomRightCoordinate() { return new Coordinate(Board.MAX_WIDTH1, Board.MIN_HEIGHT1); }
+        public Coordinate topLeftCoordinate() { return new Coordinate(Board.MIN_WIDTH1, Board.MAX_HEIGHT1); }
+        public Coordinate topRightCoordinate() { return new Coordinate(Board.MAX_WIDTH1, Board.MAX_HEIGHT1); }
+        public ICardinal northCardinal() { return new North(); }
+        public ICardinal eastCardinal() { return new East(); }
+        public ICardinal southCardinal() { return new South(); }
+        public ICardinal westCardinal() { return new West(); }
     }
 }

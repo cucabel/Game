@@ -1,4 +1,4 @@
-﻿namespace CoordinateNS
+﻿namespace ToyRobot
 {
     public class Coordinate
     {

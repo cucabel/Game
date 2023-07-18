@@ -1,33 +1,38 @@
-﻿using CoordinateNS;
-using FacingNS;
-
-namespace RobotNS
+﻿namespace ToyRobot
 {
     public sealed class Robot
     {
         private static Robot instance;
         private Coordinate coordinate;
-        private Facing facing;
+        private ICardinal cardinal;
 
-        private Robot(Coordinate coordinate, Facing facing)
+        private Robot(Coordinate coordinate, ICardinal cardinal)
         {
             this.coordinate = coordinate;
-            this.facing = facing;
+            this.cardinal = cardinal;
         }
 
-        public static Robot getInstance(Coordinate coordinate, Facing facing)
+        public static Robot getInstance(Coordinate coordinate, ICardinal cardinal)
         {
             if (instance == null)
             {
-                instance = new Robot(coordinate, facing);
+                instance = new Robot(coordinate, cardinal);
             }
 
             instance.coordinate = coordinate;
-            instance.facing = facing;
+            instance.cardinal = cardinal;
             return instance;
         }
-        public Coordinate Coordinate { get => coordinate; set => coordinate = value; }
-        public Facing Facing { get => facing; set => facing = value; }
+        public void turnLeft()
+        {
+            cardinal = cardinal.turnLeft();
+        }
+        public void turnRight() 
+        {
+            cardinal = cardinal.turnRight(); 
+        }
         public static Robot Instance { get => instance; set => instance = value; }
+        public Coordinate Coordinate { get => coordinate; set => coordinate = value; }
+        public ICardinal Cardinal { get => cardinal; set => cardinal = value; }
     }
 }

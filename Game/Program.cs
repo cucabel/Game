@@ -1,23 +1,16 @@
-﻿using BoardNS;
-using CommandFactoryNS;
-using GameNS;
-using RobotNS;
-using ValidationNS;
-
-namespace ProgramNS
+﻿namespace ToyRobot
 {
-
     public class Program
     {
         static void Main(string[] args)
         {
-            Board board = new Board();
-            Validation validation = new Validation();
-            CommandFactory commandFactory = new CommandFactory(validation);
+            IPlay board = new Board();
+            IValidation validation = new Validation();
+            ICommandFactory commandFactory = new CommandFactory(validation);
             Game game = new Game(board, commandFactory);
             Console.WriteLine(Robot.Instance.Coordinate.X);
             Console.WriteLine(Robot.Instance.Coordinate.Y);
-            Console.WriteLine(Robot.Instance.Facing);
+            Console.WriteLine(Robot.Instance.Cardinal);
             foreach (var item in board.Items)
             {
                 Console.WriteLine(item.X);

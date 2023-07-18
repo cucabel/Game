@@ -1,7 +1,4 @@
-﻿using ICommandNS;
-using IPlayNS;
-
-namespace ICommandFactoryNS
+﻿namespace ToyRobot
 {
     public interface ICommandFactory
     {

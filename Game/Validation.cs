@@ -1,21 +1,14 @@
-﻿using BoardNS;
-using CoordinateNS;
-using FacingNS;
-using IPlayNS;
-using IValidationNS;
-using RobotNS;
-
-namespace ValidationNS
+﻿namespace ToyRobot
 {
     public class Validation : IValidation
     {
         public Validation() { }
 
-        public Boolean validateLocation(int row, int col, string facing)
+        public Boolean validateLocation(int row, int col, string direction)
         {
-            Boolean validFacing = Enum.IsDefined(typeof(Facing), facing);
+            Boolean validDirection = Enum.IsDefined(typeof(Direction), direction);
 
-            if (validateCoordinate(row, col) && validFacing) return true;
+            if (validateCoordinate(row, col) && validDirection) return true;
 
             return false;
         }
@@ -29,7 +22,7 @@ namespace ValidationNS
 
             return false;
         }
-        public Boolean isOccupiedLocation(Coordinate coordinate, IPlay board)
+        public Boolean isOccupiedCoordinate(Coordinate coordinate, IPlay board)
         {
             if (board.Items.Contains(coordinate)) return true;
 

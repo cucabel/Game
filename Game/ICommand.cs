@@ -1,4 +1,4 @@
-﻿namespace ICommandNS
+﻿namespace ToyRobot
 {
     public interface ICommand
     {
