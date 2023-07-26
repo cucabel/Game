@@ -9,7 +9,7 @@
         }
         public ICommand getCommand(string input, IPlay board) 
         {
-            string[] userCommand = input.Split(' ');
+            string[] userCommand = input.ToUpper().Split(' ');
             string request = userCommand[0];
             string[] location = new string[3];
             int row = 0;
