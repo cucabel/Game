@@ -3,11 +3,11 @@
     public class CommandFactory : ICommandFactory
     {
         private IValidation validation;
-        public CommandFactory(IValidation validation) 
-        { 
+        public CommandFactory(IValidation validation)
+        {
             this.validation = validation;
         }
-        public ICommand getCommand(string input, IPlay board) 
+        public ICommand getCommand(string input, IPlay board)
         {
             string[] userCommand = input.ToUpper().Split(' ');
             string request = userCommand[0];
@@ -29,10 +29,16 @@
                 if (validation.validateLocation(row, col, direction))
                 {
                     Coordinate validCoordinate = getCoordinate(row, col);
-                    Direction validDirection = (Direction)Enum.Parse(typeof(Direction), direction);
-                    ICardinal cardinal = getCardinal(validDirection);
-                    return new PlaceRobotCommand(board, validCoordinate, cardinal);
+
+                    if (!validation.isOccupiedCoordinate(validCoordinate, board))
+                    {
+                        Direction validDirection = (Direction)Enum.Parse(typeof(Direction), direction);
+                        ICardinal cardinal = getCardinal(validDirection);
+                        return new PlaceRobotCommand(board, validCoordinate, cardinal);
+                    }
+                    else throw new Exception("The location of the coordinate provided is occupied");
                 }
+                else throw new Exception("Invalid coordinate or direction");
             }
             else if (request.Equals(StringCommand.PLACE_WALL.ToString()))
             {
@@ -43,14 +49,19 @@
                     {
                         return new PlaceWallCommand(board, validCoordinate);
                     }
+                    else throw new Exception("The location of the coordinate provided is occupied");
                 }
-            } else if (request.Equals(StringCommand.REPORT.ToString()))
+                else throw new Exception("Invalid coordinate");
+            }
+            else if (request.Equals(StringCommand.REPORT.ToString()))
             {
                 if (validation.isRobot())
                 {
                     return new ReportCommand(board);
                 }
-            } else if (request.Equals(StringCommand.MOVE.ToString()))
+                else throw new Exception("There is no robot on the board");
+            }
+            else if (request.Equals(StringCommand.MOVE.ToString()))
             {
                 if (validation.isRobot())
                 {
@@ -59,19 +70,25 @@
                     {
                         return new MoveCommand(board, nextCoordinate);
                     }
+                    else throw new Exception("The location of the coordinate provided is occupied");
                 }
-            } else if (request.Equals(StringCommand.LEFT.ToString()))
+                else throw new Exception("There is no robot on the board");
+            }
+            else if (request.Equals(StringCommand.LEFT.ToString()))
             {
                 if (validation.isRobot())
                 {
                     return new LeftCommand(board);
                 }
-            } else if (request.Equals(StringCommand.RIGHT.ToString()))
+                else throw new Exception("There is no robot on the board");
+            }
+            else if (request.Equals(StringCommand.RIGHT.ToString()))
             {
                 if (validation.isRobot())
                 {
                     return new RightCommand(board);
                 }
+                else throw new Exception("There is no robot on the board");
             }
             return null;
         }
