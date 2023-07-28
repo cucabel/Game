@@ -18,14 +18,17 @@ namespace ToyRobotShould
         }
 
         [Test]
-        public void fabricate_a_place_robot_command_with_valid_coordinate_and_direction()
+        public void fabricate_a_place_robot_command_with_valid_and_not_occupied_coordinate_and_valid_direction()
         {
             string mockedInput = StringCommand.PLACE_ROBOT.ToString() + " " + validX().ToString() + "," + validY().ToString() + "," + validDirection();
+            Coordinate coordinate = new Coordinate(validX(), validY());
             Mock.Arrange(() => mockedValidation.validateLocation(validX(), validY(), validDirection())).Returns(true);
+            Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(false);
 
             ICommand command = commandFactory.getCommand(mockedInput, mockedBoard);
 
             Mock.Assert(() => mockedValidation.validateLocation(validX(), validY(), validDirection()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
             Assert.IsInstanceOf(typeof(PlaceRobotCommand), command);
         }
 
@@ -35,10 +38,10 @@ namespace ToyRobotShould
             string mockedInput = StringCommand.PLACE_ROBOT.ToString() + " " + validX().ToString() + "," + invalidY().ToString() + "," + validDirection();
             Mock.Arrange(() => mockedValidation.validateLocation(validX(), invalidY(), validDirection())).Returns(false);
 
-            ICommand command = commandFactory.getCommand(mockedInput, mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard));
 
             Mock.Assert(() => mockedValidation.validateLocation(validX(), invalidY(), validDirection()), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("Invalid coordinate or direction"));
         }
 
         [Test]
@@ -47,10 +50,25 @@ namespace ToyRobotShould
             string mockedInput = StringCommand.PLACE_ROBOT.ToString() + " " + validX().ToString() + "," + validY().ToString() + "," + invalidDirection();
             Mock.Arrange(() => mockedValidation.validateLocation(validX(), validY(), invalidDirection())).Returns(false);
 
-            ICommand command = commandFactory.getCommand(mockedInput, mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard));
 
             Mock.Assert(() => mockedValidation.validateLocation(validX(), validY(), invalidDirection()), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("Invalid coordinate or direction"));
+        }
+
+        [Test]
+        public void ignore_the_place_robot_command_with_valid_and_occupied_coordinate_and_valid_direction()
+        {
+            string mockedInput = StringCommand.PLACE_ROBOT.ToString() + " " + validX().ToString() + "," + validY().ToString() + "," + validDirection();
+            Coordinate coordinate = new Coordinate(validX(), validY());
+            Mock.Arrange(() => mockedValidation.validateLocation(validX(), validY(), validDirection())).Returns(true);
+            Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(true);
+
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard));
+
+            Mock.Assert(() => mockedValidation.validateLocation(validX(), validY(), validDirection()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
+            Assert.That(e.Message, Is.EqualTo("The location of the coordinate provided is occupied"));
         }
 
         [Test]
@@ -74,10 +92,10 @@ namespace ToyRobotShould
             string mockedinput = StringCommand.PLACE_WALL.ToString() + " " + validX().ToString() + "," + invalidY().ToString();
             Mock.Arrange(() => mockedValidation.validateCoordinate(validX(), invalidY())).Returns(false);
 
-            ICommand command = commandFactory.getCommand(mockedinput, mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedinput, mockedBoard));
 
             Mock.Assert(() => mockedValidation.validateCoordinate(validX(), invalidY()), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("Invalid coordinate"));
         }
 
         [Test]
@@ -88,11 +106,11 @@ namespace ToyRobotShould
             Coordinate coordinate = new Coordinate(validX(), validY());
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(true);
 
-            ICommand command = commandFactory.getCommand(mockedinput, mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedinput, mockedBoard));
 
             Mock.Assert(() => mockedValidation.validateCoordinate(validX(), validY()), Occurs.Once());
             Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("The location of the coordinate provided is occupied"));
         }
 
         [Test]
@@ -111,10 +129,10 @@ namespace ToyRobotShould
         {
             Mock.Arrange(() => mockedValidation.isRobot()).Returns(false);
 
-            ICommand command = commandFactory.getCommand(StringCommand.REPORT.ToString(), mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(StringCommand.REPORT.ToString(), mockedBoard));
 
             Mock.Assert(() => mockedValidation.isRobot(), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("There is no robot on the board"));
         }
 
         //Static Mocking, Elevated Feature
@@ -140,10 +158,10 @@ namespace ToyRobotShould
         {
             Mock.Arrange(() => mockedValidation.isRobot()).Returns(false);
 
-            ICommand command = commandFactory.getCommand(StringCommand.MOVE.ToString(), mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(StringCommand.MOVE.ToString(), mockedBoard));
 
             Mock.Assert(() => mockedValidation.isRobot(), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("There is no robot on the board"));
         }
 
         //Static Mocking, Elevated Feature
@@ -156,12 +174,12 @@ namespace ToyRobotShould
             Mock.Arrange(() => mockedBoard.moveOneSpaceForward(Robot.Instance.Coordinate, Robot.Instance.Cardinal)).Returns(nextCoordinate);
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(nextCoordinate, mockedBoard)).Returns(true);
 
-            ICommand command = commandFactory.getCommand(StringCommand.MOVE.ToString(), mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(StringCommand.MOVE.ToString(), mockedBoard));
 
             Mock.Assert(() => mockedValidation.isRobot(), Occurs.Once());
             Mock.Assert(() => mockedBoard.moveOneSpaceForward(Robot.Instance.Coordinate, Robot.Instance.Cardinal), Occurs.Once());
             Mock.Assert(() => mockedValidation.isOccupiedCoordinate(nextCoordinate, mockedBoard), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("The location of the coordinate provided is occupied"));
         }
 
         [Test]
@@ -180,10 +198,10 @@ namespace ToyRobotShould
         {
             Mock.Arrange(() => mockedValidation.isRobot()).Returns(false);
 
-            ICommand command = commandFactory.getCommand(StringCommand.LEFT.ToString(), mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(StringCommand.LEFT.ToString(), mockedBoard));
 
             Mock.Assert(() => mockedValidation.isRobot(), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("There is no robot on the board"));
         }
 
         [Test]
@@ -202,10 +220,10 @@ namespace ToyRobotShould
         {
             Mock.Arrange(() => mockedValidation.isRobot()).Returns(false);
 
-            ICommand command = commandFactory.getCommand(StringCommand.RIGHT.ToString(), mockedBoard);
+            Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(StringCommand.RIGHT.ToString(), mockedBoard));
 
             Mock.Assert(() => mockedValidation.isRobot(), Occurs.Once());
-            Assert.IsNull(command);
+            Assert.That(e.Message, Is.EqualTo("There is no robot on the board"));
         }
         public int validX() { return Board.MIN_WIDTH1; }
         public int validY() { return Board.MIN_HEIGHT1; }

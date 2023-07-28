@@ -5,6 +5,7 @@ namespace ToyRobotShould
 {
     public class GameShould
     {
+        private IConsola mockedConsola;
         private ICommandFactory mockedCommandFactory;
         private IPlay board;
         private ICommand mockedPlaceRobotCommand;
@@ -13,23 +14,35 @@ namespace ToyRobotShould
         [SetUp]
         public void Setup()
         {
-            mockedCommandFactory = Mock.Create<ICommandFactory>();
             board = new Board();
+            mockedConsola = Mock.Create<IConsola>();
+            mockedCommandFactory = Mock.Create<ICommandFactory>();
             mockedPlaceRobotCommand = Mock.Create<ICommand>();
             game = new Game();
             game.Board = board;
+            game.Consola = mockedConsola;
             game.CommandFactory = mockedCommandFactory;
         }
 
         [Test]
-        public void read_the_user_command()
+        public void pass_the_messages_to_the_console()
+        {
+            Mock.Arrange(() => mockedConsola.print(Arg.AnyString)).DoNothing();
+
+            game.setOutput();
+
+            Mock.Assert(() => mockedConsola.print(Arg.AnyString), Occurs.Exactly(6));
+        }
+
+        [Test]
+        public void get_the_console_input()
         {
             string mockedString = validPlaceRobotStringCommand();
-            StringReader mockedInput = new StringReader(mockedString);
-            Console.SetIn(mockedInput);
+            Mock.Arrange(() => mockedConsola.readInput()).Returns(mockedString);
 
             string input = game.getInput();
 
+            Mock.Assert(() => mockedConsola.readInput(), Occurs.Once());
             Assert.That(mockedString, Is.EqualTo(input));
         }
 
@@ -37,49 +50,35 @@ namespace ToyRobotShould
         public void set_the_command_when_is_valid()
         {
             string mockedString = validPlaceRobotStringCommand();
-            Coordinate coordinate = new Coordinate(validX(), validY());
-            ICardinal cardinal = new North();
-            ICommand placeRobotCommand = new PlaceRobotCommand(board, coordinate, cardinal);
-            Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(placeRobotCommand);
+            Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(mockedPlaceRobotCommand);
 
             game.setCommand(mockedString);
 
             Mock.Assert(() => mockedCommandFactory.getCommand(mockedString, board), Occurs.Once());
-            Assert.IsNotNull(game.Command);
         }
 
         [Test]
         public void ignore_the_command_when_is_not_valid()
         {
             string mockedString = StringCommand.PLACE_ROBOT.ToString() + " " + validX().ToString() + "," + invalidY().ToString() + "," + validDirection();
-            Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Returns(game.Command);
+            string mockedMessage = "Invalid coordinate or direction";
+            Mock.Arrange(() => mockedCommandFactory.getCommand(mockedString, board)).Throws(new Exception(mockedMessage));
+            Mock.Arrange(() => mockedConsola.print(mockedMessage)).DoNothing();
 
             game.setCommand(mockedString);
 
             Mock.Assert(() => mockedCommandFactory.getCommand(mockedString, board), Occurs.Once());
-            Assert.IsNull(game.Command);
+            Mock.Assert(() => mockedConsola.print(mockedMessage), Occurs.Once());
         }
 
         [Test]
         public void executes_the_valid_command()
         {
             Mock.Arrange(() => mockedPlaceRobotCommand.execute()).DoNothing();
-            game.Command = mockedPlaceRobotCommand;
 
-            game.executeCommand();
+            game.executeCommand(mockedPlaceRobotCommand);
 
             Mock.Assert(() => mockedPlaceRobotCommand.execute(), Occurs.Once());
-        }
-
-        [Test]
-        public void ignores_the_invalid_command()
-        {
-            Mock.Arrange(() => mockedPlaceRobotCommand.execute()).DoNothing();
-            game.Command = null;
-
-            game.executeCommand();
-
-            Mock.Assert(() => mockedPlaceRobotCommand.execute(), Occurs.Never());
         }
         public int validX() { return Board.MIN_WIDTH1; }
         public int validY() { return Board.MIN_HEIGHT1; }
