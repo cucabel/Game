@@ -4646,9 +4646,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\ToyRobotShould.csproj",
-      "projectName": "ToyRobotShould",
-      "projectPath": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\ToyRobotShould.csproj",
+      "projectUniqueName": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\ToyRobotTests.csproj",
+      "projectName": "ToyRobotTests",
+      "projectPath": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\ToyRobotTests.csproj",
       "packagesPath": "C:\\Users\\immar\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\obj\\",
       "projectStyle": "PackageReference",

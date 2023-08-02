@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToyRobot", "Game\ToyRobot.csproj", "{3FCB635A-DE92-4575-A274-79B094A24837}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToyRobotShould", "GameShould\ToyRobotShould.csproj", "{56581DF9-A30E-4474-94E5-A2BC7C1C4E7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToyRobotTests", "GameShould\ToyRobotTests.csproj", "{56581DF9-A30E-4474-94E5-A2BC7C1C4E7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A790F39-AC0D-48C8-8CED-2BB9B6F12469}"
 	ProjectSection(SolutionItems) = preProject
