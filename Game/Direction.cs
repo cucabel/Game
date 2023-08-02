@@ -7,5 +7,4 @@
         SOUTH,
         WEST
     }
-
 }

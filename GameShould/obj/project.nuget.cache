@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yLN8EBXf9bYNgbNEFE4EFsdUfg/o+4qE5lERTLxxEhyE2wTP9RwEK5DStfSmSiJTokiS/TStNx/bSlWbH5Gfug==",
+  "dgSpecHash": "7SG49WKx67tDKUhsrQiS8RHdyL8pspHqLAOL7PtuVeiORCjrkOewQd2A7aBKt3eeX0wQ+v2ALfn+iGateufJrA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\ToyRobotShould.csproj",
+  "projectFilePath": "C:\\Users\\immar\\source\\repos\\Game\\GameShould\\ToyRobotTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\immar\\.nuget\\packages\\coverlet.collector\\3.2.0\\coverlet.collector.3.2.0.nupkg.sha512",
     "C:\\Users\\immar\\.nuget\\packages\\justmock\\2023.2.629.130\\justmock.2023.2.629.130.nupkg.sha512",
