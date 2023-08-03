@@ -2,6 +2,7 @@
 {
     public sealed class Robot
     {
+        private static readonly object padlock = new object();
         private static Robot instance;
         private Coordinate coordinate;
         private ICardinal cardinal;
@@ -14,14 +15,16 @@
 
         public static Robot getInstance(Coordinate coordinate, ICardinal cardinal)
         {
-            if (instance == null)
+            lock (padlock)
             {
-                instance = new Robot(coordinate, cardinal);
+                if (instance == null)
+                {
+                    instance = new Robot(coordinate, cardinal);
+                }
+                instance.coordinate = coordinate;
+                instance.cardinal = cardinal;
+                return instance;
             }
-
-            instance.coordinate = coordinate;
-            instance.cardinal = cardinal;
-            return instance;
         }
         public void turnLeft()
         {
@@ -31,8 +34,12 @@
         {
             cardinal = cardinal.turnRight(); 
         }
-        public static Robot Instance { get => instance; set => instance = value; }
-        public Coordinate Coordinate { get => coordinate; set => coordinate = value; }
-        public ICardinal Cardinal { get => cardinal; set => cardinal = value; }
+        public override string ToString()
+        {
+            return coordinate.ToString() + "," + cardinal.getDirection();
+        }
+        public static Robot Instance { get => instance; }
+        public Coordinate Coordinate { get => coordinate; }
+        public ICardinal Cardinal { get => cardinal; }
     }
 }
