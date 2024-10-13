@@ -13,14 +13,15 @@ namespace ToyRobotTests
         {
             validation = new Validation();
             mockedBoard = Mock.Create<IPlay>();
+
         }
 
         [Test]
         public void validate_location()
         {
-            Boolean validCommand0 = validation.validateLocation(validX(), validY(), validDirection());
-            Boolean validCommand1 = validation.validateLocation(validX(), validY(), invalidDirection());
-            Boolean validCommand2 = validation.validateLocation(validX(), invalidY(), validDirection());
+            Boolean validCommand0 = validation.validateLocation(Data.validX(), Data.validY(), Data.validDirection());
+            Boolean validCommand1 = validation.validateLocation(Data.validX(), Data.validY(), Data.invalidDirection());
+            Boolean validCommand2 = validation.validateLocation(Data.validX(), Data.invalidY(), Data.validDirection());
 
             Assert.IsTrue(validCommand0);
             Assert.IsFalse(validCommand1);
@@ -30,8 +31,8 @@ namespace ToyRobotTests
         [Test]
         public void validate_coordinate()
         {
-            Boolean validCoordinate0 = validation.validateCoordinate(validX(), validY());
-            Boolean validCoordinate1 = validation.validateCoordinate(validX(), invalidY());
+            Boolean validCoordinate0 = validation.validateCoordinate(Data.validX(), Data.validY());
+            Boolean validCoordinate1 = validation.validateCoordinate(Data.validX(), Data.invalidY());
 
             Assert.IsTrue(validCoordinate0);
             Assert.IsFalse(validCoordinate1);
@@ -41,7 +42,7 @@ namespace ToyRobotTests
         public void validate_if_the_location_is_not_occupied()
         {
             List<Coordinate> coordinates = new List<Coordinate>();
-            Coordinate coordinate = new Coordinate(validX(), validY());
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
             Mock.Arrange(() => mockedBoard.Items).Returns(coordinates);
 
             Boolean isOccupiedLocation = validation.isOccupiedCoordinate(coordinate, mockedBoard);
@@ -53,7 +54,7 @@ namespace ToyRobotTests
         public void validate_if_the_location_is_occupied()
         {
             List<Coordinate> coordinates = new List<Coordinate>();
-            Coordinate coordinate = new Coordinate(validX(), validY());
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
             coordinates.Add(coordinate);
             Mock.Arrange(() => mockedBoard.Items).Returns(coordinates);
 
@@ -66,7 +67,7 @@ namespace ToyRobotTests
         [Test]
         public void validate_if_there_is_a_robot_on_the_board()
         {
-            Coordinate coordinate = new Coordinate(validX(), validY());
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
             ICardinal cardinal = new North();
             Mock.Arrange(() => mockedBoard.Robot).Returns(Robot.getInstance(coordinate, cardinal));
 
@@ -83,10 +84,5 @@ namespace ToyRobotTests
 
             Assert.IsFalse(isRobot);
         }
-        private int validX() { return (int)Parameters.MinWidth; }
-        private int validY() { return (int)Parameters.MinHeight; }
-        private int invalidY() { return (int)Parameters.MaxHeight + (int)Parameters.UnitSpace; }
-        private string validDirection() { return "NORTH"; }
-        private string invalidDirection() { return "CENTER"; }
     }
 }

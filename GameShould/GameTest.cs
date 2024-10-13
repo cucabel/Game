@@ -21,8 +21,8 @@ namespace ToyRobotTests
             mockedBoard = Mock.Create<IPlay>();
             mockedCommandFactory = Mock.Create<ICommandFactory>();
             mockedPlaceRobotCommand = Mock.Create<ICommand>();
-            mockedValidString = validPlaceRobotStringCommand();
-            mockedInvalidString = StringCommand.PlaceRobot + " " + validX().ToString() + "," + invalidY().ToString() + "," + validDirection();
+            mockedValidString = Data.validPlaceRobotStringCommand();
+            mockedInvalidString = StringCommand.PlaceRobot + " " + Data.validX().ToString() + "," + Data.invalidY().ToString() + "," + Data.validDirection();
             mockedMessage = "Invalid coordinate or direction";
             Mock.Arrange(() => mockedConsola.print(Arg.AnyString)).DoNothing().InSequence();
             Mock.Arrange(() => mockedConsola.readInput()).Returns(mockedValidString).InSequence();
@@ -55,15 +55,6 @@ namespace ToyRobotTests
         public void ignore_the_command_when_is_not_valid_and_pass_the_exception_message_the_consola()
         {
             Mock.Assert(() => mockedCommandFactory.getCommand(mockedInvalidString, mockedBoard, game), Occurs.Once());
-        }
-
-        private int validX() { return (int)Parameters.MinWidth; }
-        private int validY() { return (int)Parameters.MinHeight; }
-        private int invalidY() { return (int)Parameters.MaxHeight + (int)Parameters.UnitSpace; }
-        private string validDirection() { return "North"; }
-        private string validPlaceRobotStringCommand()
-        {
-            return StringCommand.PlaceRobot + " " + validX().ToString() + "," + validY().ToString() + "," + validDirection();
         }
     }
 }
