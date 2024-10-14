@@ -33,14 +33,14 @@ namespace ToyRobotTests
         [Test]
         public void fabricate_a_place_robot_command_with_valid_and_not_occupied_coordinate_and_valid_direction()
         {
-            string mockedInput = StringCommand.PlaceRobot + " " + validX().ToString() + "," + validY().ToString() + "," + validDirection();
-            Coordinate coordinate = new Coordinate(validX(), validY());
-            Mock.Arrange(() => mockedValidation.validateLocation(validX(), validY(), validDirection())).Returns(true);
+            string mockedInput = StringCommand.PlaceRobot + " " + Data.validX().ToString() + "," + Data.validY().ToString() + "," + Data.validDirection();
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
+            Mock.Arrange(() => mockedValidation.validateLocation(Data.validX(), Data.validY(), Data.validDirection())).Returns(true);
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(false);
 
             ICommand command = commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI);
 
-            Mock.Assert(() => mockedValidation.validateLocation(validX(), validY(), validDirection()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateLocation(Data.validX(), Data.validY(), Data.validDirection()), Occurs.Once());
             Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
             Assert.IsInstanceOf(typeof(PlaceRobotCommand), command);
         }
@@ -48,7 +48,7 @@ namespace ToyRobotTests
         [Test]
         public void ignore_the_place_robot_command_with_the_wrong_number_of_parameters()
         {
-            string mockedInput = StringCommand.PlaceRobot + " " + validX().ToString() + "," + invalidY().ToString();
+            string mockedInput = StringCommand.PlaceRobot + " " + Data.validX().ToString() + "," + Data.invalidY().ToString();
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
@@ -58,7 +58,7 @@ namespace ToyRobotTests
         [Test]
         public void ignore_the_place_robot_command_when_the_coordinate_is_not_expressed_in_numbers()
         {
-            string mockedInput = StringCommand.PlaceRobot + " " + "ONE" + "," + validY().ToString() + "," + validDirection();
+            string mockedInput = StringCommand.PlaceRobot + " " + "ONE" + "," + Data.validY().ToString() + "," + Data.validDirection();
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
@@ -68,38 +68,38 @@ namespace ToyRobotTests
         [Test]
         public void ignore_the_place_robot_command_with_invalid_coordinate()
         {
-            string mockedInput = StringCommand.PlaceRobot + " " + validX().ToString() + "," + invalidY().ToString() + "," + validDirection();
-            Mock.Arrange(() => mockedValidation.validateLocation(validX(), invalidY(), validDirection())).Returns(false);
+            string mockedInput = StringCommand.PlaceRobot + " " + Data.validX().ToString() + "," + Data.invalidY().ToString() + "," + Data.validDirection();
+            Mock.Arrange(() => mockedValidation.validateLocation(Data.validX(), Data.invalidY(), Data.validDirection())).Returns(false);
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
-            Mock.Assert(() => mockedValidation.validateLocation(validX(), invalidY(), validDirection()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateLocation(Data.validX(), Data.invalidY(), Data.validDirection()), Occurs.Once());
             Assert.That(e.Message, Is.EqualTo("Invalid coordinate or direction"));
         }
 
         [Test]
         public void ignore_the_place_robot_command_with_invalid_direction()
         {
-            string mockedInput = StringCommand.PlaceRobot + " " + validX().ToString() + "," + validY().ToString() + "," + invalidDirection();
-            Mock.Arrange(() => mockedValidation.validateLocation(validX(), validY(), invalidDirection())).Returns(false);
+            string mockedInput = StringCommand.PlaceRobot + " " + Data.validX().ToString() + "," + Data.validY().ToString() + "," + Data.invalidDirection();
+            Mock.Arrange(() => mockedValidation.validateLocation(Data.validX(), Data.validY(), Data.invalidDirection())).Returns(false);
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
-            Mock.Assert(() => mockedValidation.validateLocation(validX(), validY(), invalidDirection()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateLocation(Data.validX(), Data.validY(), Data.invalidDirection()), Occurs.Once());
             Assert.That(e.Message, Is.EqualTo("Invalid coordinate or direction"));
         }
 
         [Test]
         public void ignore_the_place_robot_command_with_valid_and_occupied_coordinate_and_valid_direction()
         {
-            string mockedInput = StringCommand.PlaceRobot + " " + validX().ToString() + "," + validY().ToString() + "," + validDirection();
-            Coordinate coordinate = new Coordinate(validX(), validY());
-            Mock.Arrange(() => mockedValidation.validateLocation(validX(), validY(), validDirection())).Returns(true);
+            string mockedInput = StringCommand.PlaceRobot + " " + Data.validX().ToString() + "," + Data.validY().ToString() + "," + Data.validDirection();
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
+            Mock.Arrange(() => mockedValidation.validateLocation(Data.validX(), Data.validY(), Data.validDirection())).Returns(true);
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(true);
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
-            Mock.Assert(() => mockedValidation.validateLocation(validX(), validY(), validDirection()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateLocation(Data.validX(), Data.validY(), Data.validDirection()), Occurs.Once());
             Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
             Assert.That(e.Message, Is.EqualTo("The location of the coordinate provided is occupied"));
         }
@@ -107,14 +107,14 @@ namespace ToyRobotTests
         [Test]
         public void fabricate_a_place_wall_command_with_valid_and_not_occupied_coordinate()
         {
-            string mockedinput = validPlaceWallStringCommand();
-            Mock.Arrange(() => mockedValidation.validateCoordinate(validX(), validY())).Returns(true);
-            Coordinate coordinate = new Coordinate(validX(), validY());
+            string mockedinput = Data.validPlaceWallStringCommand();
+            Mock.Arrange(() => mockedValidation.validateCoordinate(Data.validX(), Data.validY())).Returns(true);
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(false);
 
             ICommand command = commandFactory.getCommand(mockedinput, mockedBoard, mockedGameUI);
 
-            Mock.Assert(() => mockedValidation.validateCoordinate(validX(), validY()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateCoordinate(Data.validX(), Data.validY()), Occurs.Once());
             Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
             Assert.IsInstanceOf(typeof(PlaceWallCommand), command);
         }
@@ -122,7 +122,7 @@ namespace ToyRobotTests
         [Test]
         public void ignore_the_place_wall_command_with_the_wrong_number_of_parameters()
         {
-            string mockedInput = StringCommand.PlaceWall + " " + validX().ToString();
+            string mockedInput = StringCommand.PlaceWall + " " + Data.validX().ToString();
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
@@ -132,7 +132,7 @@ namespace ToyRobotTests
         [Test]
         public void ignore_the_place_wall_command_when_the_coordinate_is_not_expressed_in_numbers()
         {
-            string mockedInput = StringCommand.PlaceWall + " " + "ONE" + "," + validY().ToString();
+            string mockedInput = StringCommand.PlaceWall + " " + "ONE" + "," + Data.validY().ToString();
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI));
 
@@ -141,26 +141,26 @@ namespace ToyRobotTests
         [Test]
         public void ignore_place_wall_command_with_invalid_coordinate()
         {
-            string mockedinput = StringCommand.PlaceWall + " " + validX().ToString() + "," + invalidY().ToString();
-            Mock.Arrange(() => mockedValidation.validateCoordinate(validX(), invalidY())).Returns(false);
+            string mockedinput = StringCommand.PlaceWall + " " + Data.validX().ToString() + "," + Data.invalidY().ToString();
+            Mock.Arrange(() => mockedValidation.validateCoordinate(Data.validX(), Data.invalidY())).Returns(false);
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedinput, mockedBoard, mockedGameUI));
 
-            Mock.Assert(() => mockedValidation.validateCoordinate(validX(), invalidY()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateCoordinate(Data.validX(), Data.invalidY()), Occurs.Once());
             Assert.That(e.Message, Is.EqualTo("Invalid coordinate"));
         }
 
         [Test]
         public void ignore_the_place_wall_command_with_valid_coordinate_but_occupied_target_location()
         {
-            string mockedinput = validPlaceWallStringCommand();
-            Mock.Arrange(() => mockedValidation.validateCoordinate(validX(), validY())).Returns(true);
-            Coordinate coordinate = new Coordinate(validX(), validY());
+            string mockedinput = Data.validPlaceWallStringCommand();
+            Mock.Arrange(() => mockedValidation.validateCoordinate(Data.validX(), Data.validY())).Returns(true);
+            Coordinate coordinate = new Coordinate(Data.validX(), Data.validY());
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard)).Returns(true);
 
             Exception e = Assert.Throws<Exception>(() => commandFactory.getCommand(mockedinput, mockedBoard, mockedGameUI));
 
-            Mock.Assert(() => mockedValidation.validateCoordinate(validX(), validY()), Occurs.Once());
+            Mock.Assert(() => mockedValidation.validateCoordinate(Data.validX(), Data.validY()), Occurs.Once());
             Mock.Assert(() => mockedValidation.isOccupiedCoordinate(coordinate, mockedBoard), Occurs.Once());
             Assert.That(e.Message, Is.EqualTo("The location of the coordinate provided is occupied"));
         }
@@ -192,7 +192,7 @@ namespace ToyRobotTests
         {
             Coordinate nextCoordinate = new Coordinate((int)Parameters.MinWidth, (int)Parameters.MinHeight + (int)Parameters.UnitSpace);
             Mock.Arrange(() => mockedValidation.isRobot(mockedBoard)).Returns(true);
-            Mock.Arrange(() => mockedBoard.Robot).Returns(Robot.getInstance(bottomLeftCoordinate(), northCardinal()));
+            Mock.Arrange(() => mockedBoard.Robot).Returns(Robot.getInstance(Data.bottomLeftCoordinate(), Data.northCardinal()));
             Mock.Arrange(() => mockedBoard.moveOneSpaceForward(mockedBoard.Robot.Coordinate, mockedBoard.Robot.Cardinal)).Returns(nextCoordinate);
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(nextCoordinate, mockedBoard)).Returns(false);
 
@@ -220,7 +220,7 @@ namespace ToyRobotTests
         {
             Coordinate nextCoordinate = new Coordinate((int)Parameters.MinWidth, (int)Parameters.MinHeight + (int)Parameters.UnitSpace);
             Mock.Arrange(() => mockedValidation.isRobot(mockedBoard)).Returns(true);
-            Mock.Arrange(() => mockedBoard.Robot).Returns(Robot.getInstance(bottomLeftCoordinate(), northCardinal()));
+            Mock.Arrange(() => mockedBoard.Robot).Returns(Robot.getInstance(Data.bottomLeftCoordinate(), Data.northCardinal()));
             Mock.Arrange(() => mockedBoard.moveOneSpaceForward(mockedBoard.Robot.Coordinate, mockedBoard.Robot.Cardinal)).Returns(nextCoordinate);
             Mock.Arrange(() => mockedValidation.isOccupiedCoordinate(nextCoordinate, mockedBoard)).Returns(true);
 
@@ -284,17 +284,6 @@ namespace ToyRobotTests
             ICommand command = commandFactory.getCommand(mockedInput, mockedBoard, mockedGameUI);
 
             Assert.IsNull(command);
-        }
-        private int validX() { return (int)Parameters.MinWidth; }
-        private int validY() { return (int)Parameters.MinHeight; }
-        private int invalidY() { return (int)Parameters.MaxHeight + (int)Parameters.UnitSpace; }
-        private string validDirection() { return "NORTH"; }
-        private string invalidDirection() { return "CENTER"; }
-        private Coordinate bottomLeftCoordinate() { return new Coordinate((int)Parameters.MinWidth, (int)Parameters.MinHeight); }
-        private ICardinal northCardinal() { return new North(); }
-        private string validPlaceWallStringCommand()
-        {
-            return StringCommand.PlaceWall + " " + validX().ToString() + "," + validY().ToString();
         }
     }
 }
