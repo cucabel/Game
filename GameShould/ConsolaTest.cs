@@ -15,7 +15,7 @@ namespace ToyRobotTests
         [Test]
         public void read_the_user_command()
         {
-            string mockedString = StringCommand.PlaceWall + " " + Data.validX().ToString() + "," + Data.validY().ToString();
+            string mockedString = StringCommand.PlaceWall + " " + validX().ToString() + "," + validY().ToString();
             StringReader mockedInput = new StringReader(mockedString);
             Console.SetIn(mockedInput);
 
@@ -34,5 +34,7 @@ namespace ToyRobotTests
 
             Assert.That(output.ToString(), Is.EqualTo(mockedString + "\r\n"));
         }
+        private int validX() { return (int)Parameters.MinWidth; }
+        private int validY() { return (int)Parameters.MinHeight; }
     }
 }
